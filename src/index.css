@@ -1,0 +1,71 @@
+/* ===== Design tokens (app-wide variables) ===== */
+:root {
+  --bg: #0d1117;
+  --panel: #161b22;
+  --ink: #e6edf3;
+  --muted: #8b949e;
+  --brand: #34d399;
+  --border: #203047;
+
+  --radius: 16px;
+  --gap: 12px;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+
+  --container-w: 1024px;
+  --topbar-h: 56px;
+
+  --z-topbar: 1000; /* header sits above content */
+  --z-modal: 1100; /* modal sits above header */
+}
+
+/* ===== Base / light reset ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Ubuntu,
+    Cantarell,
+    "Noto Sans",
+    sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
