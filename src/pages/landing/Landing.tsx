@@ -1,31 +1,27 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { ROUTES } from "../../router/routes";
-import {
-  readSession,
-  validateUsername,
-  writeSession,
-  createSession,
-} from "../../utils/session.ts";
+import useAuth from "../../hooks/useAuth";
 import "./Landing.css";
 
 const Landing = () => {
+  const { login, session } = useAuth();
   const nav = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname ?? ROUTES.GAME;
+
   const [username, setUsername] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
-  const existing = readSession();
-
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const valid = validateUsername(username);
-    if (!valid) {
-      setError("Use 1–20 chars: letters, digits, _ or -");
+    const res = login(username);
+    if (!res.ok) {
+      setError(res.error);
       return;
     }
-    writeSession(createSession(valid));
-    nav(ROUTES.GAME);
+    nav(from);
   };
 
   return (
@@ -36,9 +32,9 @@ const Landing = () => {
           Enter your name to start the Memory Game.
         </p>
 
-        {existing && (
+        {session && (
           <p className="badge" aria-live="polite">
-            Signed in previously as <strong>{existing.username}</strong>
+            Signed in previously as <strong>{session.username}</strong>
           </p>
         )}
 
