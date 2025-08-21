@@ -6,12 +6,14 @@
   --muted: #8b949e;
   --brand: #34d399;
   --border: #203047;
+  --error: #fda4af;
 
   --radius: 16px;
   --gap: 12px;
   --shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
 
-  --container-w: 1024px;
+  --container-sm-w: 425px;
+  --container-l-w: 1024px;
   --topbar-h: 56px;
 
   --z-topbar: 1000; /* header sits above content */
@@ -68,4 +70,85 @@ svg {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* ===== Small, reusable utilities ===== */
+.container-sm {
+  max-width: var(--container-sm-w);
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+.container-l {
+  max-width: var(--container-l-w);
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+/* Visually subtle metadata pill */
+.badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #0e1a2a;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+/* Screen-reader only text helper */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reusable panel surface */
+.panel {
+  background: var(--panel);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+/* Buttons (base + a primary variant) */
+.btn {
+  cursor: pointer;
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.btn--primary {
+  background: var(--brand);
+  color: #0b1320;
+}
+
+/* Text inputs */
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #2b3138;
+  background: #0f1520;
+  color: var(--ink);
+}
+.input::placeholder {
+  color: #6b7280;
+}
+.input:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.full-width {
+  width: 100%;
 }

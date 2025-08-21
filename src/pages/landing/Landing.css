@@ -1,0 +1,47 @@
+.landing {
+  padding-block: 24px;
+}
+
+.landing__panel {
+  margin-top: 24px;
+}
+
+.landing__title {
+  text-align: center;
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.landing__subtitle {
+  text-align: center;
+  margin: 0 0 12px 0;
+  color: var(--muted);
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+  max-width: 420px;
+}
+
+.form__group {
+  display: grid;
+  gap: 6px;
+}
+
+.form__label {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.form__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.form__error {
+  color: var(--error);
+  font-size: 0.95rem;
+}
