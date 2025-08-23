@@ -1,8 +1,8 @@
-import { useState } from "react";
-import type { FormEvent } from "react";
+import { type ChangeEvent, type FormEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { ROUTES } from "../../constants/routes";
 import useAuth from "../../hooks/useAuth";
+import logger from "../../services/logger";
 import "./Landing.css";
 
 const Landing = () => {
@@ -13,15 +13,31 @@ const Landing = () => {
 
   const [username, setUsername] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const onSubmit = (e: FormEvent) => {
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+    if (error) setError(null);
+  };
+
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const res = login(username);
-    if (!res.ok) {
-      setError(res.error);
-      return;
+    if (loading) return;
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await login(username);
+      if (!res.ok) {
+        setError(res.error);
+        return;
+      }
+      nav(from, { replace: true });
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+      logger.error(err);
+    } finally {
+      setLoading(false);
     }
-    nav(from);
   };
 
   return (
@@ -38,7 +54,12 @@ const Landing = () => {
           </p>
         )}
 
-        <form className="form" onSubmit={onSubmit} noValidate>
+        <form
+          className="form"
+          onSubmit={onSubmit}
+          aria-busy={loading}
+          noValidate
+        >
           <label className="form__group">
             <span className="form__label">Name</span>
             <input
@@ -47,12 +68,16 @@ const Landing = () => {
               name="username"
               placeholder="e.g. Rafael Silva"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={onChangeInput}
               autoComplete="username"
               inputMode="text"
               aria-invalid={!!error}
               aria-describedby={error ? "username-error" : undefined}
               maxLength={20}
+              disabled={loading}
+              pattern="[A-Za-z0-9 _-]{1,20}"
+              enterKeyHint="go"
+              autoFocus
             />
           </label>
 
@@ -63,8 +88,16 @@ const Landing = () => {
           )}
 
           <div className="form__actions">
-            <button type="submit" className="btn btn--primary full-width">
-              Enter
+            <button
+              type="submit"
+              className="btn btn--primary full-width"
+              disabled={loading}
+              aria-busy={loading}
+            >
+              <span className="btn__content">
+                {loading && <span className="spinner" aria-hidden="true" />}
+                <span>{loading ? "Entering…" : "Enter"}</span>
+              </span>
             </button>
           </div>
         </form>
