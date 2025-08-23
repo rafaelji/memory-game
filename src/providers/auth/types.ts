@@ -1,4 +1,4 @@
-import type { Session } from "./session.ts";
+import type { Session } from "../../shared/types/session.ts";
 
 type AuthContextValue = {
   session: Session | null;

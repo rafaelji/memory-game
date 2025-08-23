@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useLocation } from "react-router";
 import TopBar from "./components/top-bar/TopBar.tsx";
 import useAuth from "./hooks/useAuth";
-import { ROUTES } from "./router/routes.ts";
+import { ROUTES } from "./constants/routes";
 
 const Layout = () => {
   const { session } = useAuth();

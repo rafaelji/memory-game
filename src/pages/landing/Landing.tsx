@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { ROUTES } from "../../router/routes";
+import { ROUTES } from "../../constants/routes";
 import useAuth from "../../hooks/useAuth";
 import "./Landing.css";
 

@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { ROUTES } from "../../router/routes.ts";
+import { ROUTES } from "../../constants/routes";
 import "./TopBar.css";
 
 const TopBar = () => {
