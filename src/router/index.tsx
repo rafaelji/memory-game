@@ -1,19 +1,30 @@
-import { Routes, Route } from "react-router";
+import {
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+} from "react-router";
 import { ROUTES } from "@/constants/routes";
 import Layout from "@/layout.tsx";
 import Landing from "@/pages/landing/Landing.tsx";
+import AppRouteError from "@/router/AppRouteError.tsx";
+import RequireAuth from "@/constants/routes/RequireAuth.tsx";
 
 const Router = () => {
-  return (
-    <Routes>
-      <Route element={<Layout />}>
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route element={<Layout />} errorElement={<AppRouteError />}>
         <Route index element={<Landing />} />
-        <Route path={ROUTES.GAME} element={<>Game Board</>} />
-        <Route path={ROUTES.SCORE} element={<>Game Score</>} />
+        <Route element={<RequireAuth />}>
+          <Route path={ROUTES.GAME} element={<>Game Board</>} />
+          <Route path={ROUTES.SCORE} element={<>Game Score</>} />
+        </Route>
         <Route path="*" element={<>404</>} />
-      </Route>
-    </Routes>
+      </Route>,
+    ),
   );
+
+  return <RouterProvider router={router} />;
 };
 
 export default Router;

@@ -125,3 +125,15 @@ svg {
 .full-width {
   width: 100%;
 }
+
+.mt-0 {
+  margin-top: 0;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
+
+.text-center {
+  text-align: center;
+}
