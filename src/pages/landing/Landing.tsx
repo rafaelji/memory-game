@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router";
 import { ROUTES } from "../../constants/routes";
 import useAuth from "../../hooks/useAuth";
 import logger from "../../services/logger";
+import Button from "../../components/button/Button.tsx";
 import "./Landing.css";
 
 const Landing = () => {
@@ -88,17 +89,15 @@ const Landing = () => {
           )}
 
           <div className="form__actions">
-            <button
+            <Button
               type="submit"
-              className="btn btn--primary full-width"
+              variant="primary"
+              loading={loading}
               disabled={loading}
-              aria-busy={loading}
+              fullWidth
             >
-              <span className="btn__content">
-                {loading && <span className="spinner" aria-hidden="true" />}
-                <span>{loading ? "Entering…" : "Enter"}</span>
-              </span>
-            </button>
+              {loading ? "Entering…" : "Enter"}
+            </Button>
           </div>
         </form>
       </div>

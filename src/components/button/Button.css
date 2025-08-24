@@ -1,0 +1,57 @@
+.btn {
+  cursor: pointer;
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.btn--primary {
+  background: var(--brand);
+  color: #0b1320;
+}
+
+/* (optional) secondary/ghost variant */
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid #2b3138;
+}
+
+/* Consistent focus ring */
+.btn:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Disabled state */
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Align icon + label */
+.btn__content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Spinner (CSS-only) */
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 1rem; /* 16px */
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid currentcolor;
+  border-right-color: transparent; /* the "gap" */
+  animation: btn-spin 0.6s linear infinite;
+}

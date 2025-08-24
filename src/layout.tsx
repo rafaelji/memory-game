@@ -14,7 +14,9 @@ const Layout = () => {
   return (
     <>
       <TopBar />
-      <Outlet />
+      <main id="main" className="container-lg" role="main">
+        <Outlet />
+      </main>
     </>
   );
 };
