@@ -1,0 +1,25 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "plugins": ["stylelint-selector-bem-pattern"],
+  "rules": {
+    "selector-class-pattern": [
+      "^(?:[a-z0-9]+(?:-[a-z0-9]+)*)(?:__(?:[a-z0-9]+(?:-[a-z0-9]+)*))*?(?:--(?:[a-z0-9]+(?:-[a-z0-9]+)*))*?$|^(?:u|is|has|js|qa)-[a-z0-9-]+$",
+      { "resolveNestedSelectors": true }
+    ],
+    "plugin/selector-bem-pattern": {
+      "preset": "bem",
+      "componentName": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "componentSelectors": "^\\.{component}(?:__(?:[a-z0-9]+(?:-[a-z0-9]+)*))*?(?:--(?:[a-z0-9]+(?:-[a-z0-9]+)*))*?$",
+      "utilitySelectors": "^\\.(u|is|has|js|qa)-[a-z0-9-]+$"
+    },
+    "no-descending-specificity": [
+      true,
+      { "ignore": ["selectors-within-list"] }
+    ],
+    "selector-max-compound-selectors": 3,
+    "max-nesting-depth": 1,
+    "selector-no-qualifying-type": [true, { "ignore": ["attribute"] }],
+    "declaration-no-important": null
+  },
+  "ignoreFiles": ["**/vendor/**", "**/dist/**", "**/build/**"]
+}
