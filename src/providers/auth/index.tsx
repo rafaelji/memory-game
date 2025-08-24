@@ -1,7 +1,7 @@
 import { createContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import type { Session } from "../../shared/types/session";
-import { authService } from "../../services/auth";
+import type { Session } from "@/shared/types/session";
+import { authService } from "@/services/auth";
 import type { AuthContextValue } from "./types.ts";
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);

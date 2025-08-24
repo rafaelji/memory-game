@@ -1,5 +1,5 @@
 import type { Logger } from "./types";
-import { IS_DEV } from "../../constants/env";
+import { IS_DEV } from "@/constants/env";
 
 const noop = () => {};
 

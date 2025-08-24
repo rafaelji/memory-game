@@ -1,4 +1,4 @@
-import type { Session } from "../../shared/types/session.ts";
+import type { Session } from "@/shared/types/session.ts";
 
 type LoginResult = { ok: true } | { ok: false; error: string };
 

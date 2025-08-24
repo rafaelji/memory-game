@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router";
-import { ROUTES } from "../constants/routes";
-import Layout from "../layout.tsx";
-import Landing from "../pages/landing/Landing.tsx";
+import { ROUTES } from "@/constants/routes";
+import Layout from "@/layout.tsx";
+import Landing from "@/pages/landing/Landing.tsx";
 
 const Router = () => {
   return (

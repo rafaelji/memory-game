@@ -5,11 +5,11 @@ import {
   createSession,
   validateUsername,
   onSessionChange,
-} from "../../lib/session";
+} from "@/lib/session";
 import type { AuthService, Listener, LoginResult } from "./types.ts";
-import type { Session } from "../../shared/types/session";
-import type { Logger } from "../logger/types.ts";
-import defaultLogger from "../logger";
+import type { Session } from "@/shared/types/session.ts";
+import type { Logger } from "@/services/logger/types.ts";
+import defaultLogger from "@/services/logger";
 
 /**
  * Auth Service (client-side)

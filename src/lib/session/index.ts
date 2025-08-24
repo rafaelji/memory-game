@@ -1,5 +1,5 @@
-import type { Session } from "../../shared/types/session.ts";
-import { SESSION_KEY } from "../../constants/session";
+import type { Session } from "@/shared/types/session.ts";
+import { SESSION_KEY } from "@/constants/session";
 
 /** Allow-list validation: 1..20 of letters, digits, underscore or hyphen */
 function validateUsername(raw: string): string | null {

@@ -1,9 +1,9 @@
 import { type ChangeEvent, type FormEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { ROUTES } from "../../constants/routes";
-import useAuth from "../../hooks/useAuth";
-import logger from "../../services/logger";
-import Button from "../../components/button/Button.tsx";
+import { ROUTES } from "@/constants/routes";
+import useAuth from "@/hooks/useAuth";
+import logger from "@/services/logger";
+import Button from "@/components/button/Button.tsx";
 import "./Landing.css";
 
 const Landing = () => {
