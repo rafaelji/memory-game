@@ -42,6 +42,25 @@ const Landing = () => {
     }
   };
 
+  const startGameWithPreviousPlayer = async () => {
+    if (loading || !lastPlayer) return;
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await login(lastPlayer);
+      if (!res.ok) {
+        setError(res.error);
+        return;
+      }
+      nav(from, { replace: true });
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+      logger.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (session) {
     return <Navigate to={ROUTES.GAME} replace />;
   }
@@ -56,7 +75,10 @@ const Landing = () => {
 
         {!session && lastPlayer && (
           <p className="badge text-center" aria-live="polite">
-            Signed in previously as <strong>{lastPlayer}</strong>
+            Signed in previously as{" "}
+            <strong className="link" onClick={startGameWithPreviousPlayer}>
+              {lastPlayer}
+            </strong>
           </p>
         )}
 

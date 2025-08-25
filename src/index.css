@@ -151,3 +151,9 @@ svg {
   white-space: nowrap;
   border: 0;
 }
+
+.link {
+  color: var(--brand);
+  cursor: pointer;
+  text-decoration: underline;
+}
