@@ -1,3 +1,4 @@
+import type { GridSize } from "./types";
 import { BEST_KEY } from "@/constants/game";
 import logger from "@/services/logger";
 
@@ -17,10 +18,10 @@ function shuffle<T>(arr: T[]): T[] {
 /** Safely read a best score */
 function readBest(
   username: string,
-  size: number,
+  gridSize: GridSize,
 ): { moves: number; seconds: number } | null {
   try {
-    const raw = localStorage.getItem(BEST_KEY(username, size));
+    const raw = localStorage.getItem(BEST_KEY(username, gridSize));
     if (!raw) return null;
     const parsed = JSON.parse(raw) as { moves: number; seconds: number };
     if (
@@ -38,13 +39,13 @@ function readBest(
 /** Safely write a best score */
 function writeBest(
   username: string,
-  size: number,
+  gridSize: GridSize,
   moves: number,
   seconds: number,
 ): void {
   try {
     localStorage.setItem(
-      BEST_KEY(username, size),
+      BEST_KEY(username, gridSize),
       JSON.stringify({ moves, seconds }),
     );
   } catch (err) {

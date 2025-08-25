@@ -5,17 +5,21 @@ import Card from "@/components/game/card/Card.tsx";
 import { type Card as CardType } from "@/components/game/card/types.ts";
 import { DEFAULT_SIZE, SYMBOLS_POOL } from "@/constants/game";
 import { readBest, shuffle, writeBest } from "@/pages/game/Helper.ts";
+import type { GridSize } from "./types";
 import "./Game.css";
 
 const Game = () => {
   const { session } = useAuth();
   const username = session?.username ?? "guest";
 
-  const [size] = useState<number>(DEFAULT_SIZE);
-  const currentUserBestScore = readBest(username, size);
+  const [gridSize] = useState<GridSize>(DEFAULT_SIZE);
+  const currentUserBestScore = readBest(username, gridSize);
 
   // Deck
-  const pairsCount = useMemo(() => (size * size) / 2, [size]);
+  const pairsCount = useMemo(
+    () => (gridSize.rows * gridSize.cols) / 2,
+    [gridSize],
+  );
   const [deck, setDeck] = useState<CardType[]>([]);
 
   // Selection state
@@ -125,14 +129,14 @@ const Game = () => {
     setRunning(false);
 
     // best score: fewer moves wins; tie-breaker is faster time
-    const best = readBest(username, size);
+    const best = readBest(username, gridSize);
     const shouldSave =
       !best ||
       moves < best.moves ||
       (moves === best.moves && seconds < best.seconds);
 
     if (shouldSave) {
-      writeBest(username, size, moves, seconds);
+      writeBest(username, gridSize, moves, seconds);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -163,9 +167,13 @@ const Game = () => {
       </p>
 
       <div
-        className={`game__grid grid--${size}`}
+        className="game__grid"
         role="grid"
-        aria-label={`${size} by ${size} memory grid`}
+        aria-label={`${gridSize} by ${gridSize} memory grid`}
+        style={{
+          gridTemplateRows: `repeat(${gridSize.rows}, minmax(0, 1fr))`,
+          gridTemplateColumns: `repeat(${gridSize.cols}, minmax(0, 1fr))`,
+        }}
       >
         {deck.map((card, index) => (
           <Card

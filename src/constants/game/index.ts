@@ -1,8 +1,10 @@
-/** LocalStorage key for best scores per user + size */
-const BEST_KEY = (user: string, size: number) =>
-  `snyk-mem:best:v1:${user}:${size}`;
+import type { GridSize } from "@/pages/game/types";
 
-const DEFAULT_SIZE = 4;
+/** LocalStorage key for best scores per user + size */
+const BEST_KEY = (user: string, gridSize: GridSize) =>
+  `snyk-mem:best:v1:${user}:${gridSize.rows * gridSize.cols}}`;
+
+const DEFAULT_SIZE: GridSize = { rows: 3, cols: 4 };
 
 const SYMBOLS_POOL = [
   "🍎",
