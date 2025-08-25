@@ -8,7 +8,7 @@ import { ROUTES } from "@/constants/routes";
 import Layout from "@/layout.tsx";
 import Landing from "@/pages/landing/Landing.tsx";
 import AppRouteError from "@/router/AppRouteError.tsx";
-import RequireAuth from "@/constants/routes/RequireAuth.tsx";
+import RequireAuth from "@/router/RequireAuth.tsx";
 
 const Router = () => {
   const router = createBrowserRouter(
