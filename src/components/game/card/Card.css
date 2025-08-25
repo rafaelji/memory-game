@@ -1,0 +1,52 @@
+.card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #0e1422;
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+/* Pressed/focus ring aligned with global */
+.card:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Faces */
+.card__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: clamp(1.25rem, 6vw, 2rem);
+  line-height: 1;
+  user-select: none;
+}
+
+/* Visible state: front when revealed/matched, back otherwise */
+.card--hidden .card__face--front {
+  display: none;
+}
+
+.card--hidden .card__face--back {
+  display: grid;
+}
+
+.card--revealed .card__face--front,
+.card--matched .card__face--front {
+  display: grid;
+}
+
+.card--revealed .card__face--back,
+.card--matched .card__face--back {
+  display: none;
+}
+
+/* Matched styling */
+.card--matched {
+  background: #0f1a28;
+  border-color: #2b3a4f;
+}
