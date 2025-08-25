@@ -32,6 +32,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
         "btn",
         variant === "primary" && "btn--primary",
         variant === "ghost" && "btn--ghost",
+        variant === "danger" && "btn--danger",
         fullWidth && "full-width",
         className,
       )}

@@ -19,6 +19,20 @@
   border: 1px solid #2b3138;
 }
 
+/* Danger (destructive) */
+.btn--danger {
+  background: var(--error);
+  color: #0b1320;
+}
+
+.btn--danger:hover:not(:disabled) {
+  filter: brightness(0.97);
+}
+
+.btn--danger:active:not(:disabled) {
+  filter: brightness(0.94);
+}
+
 /* Consistent focus ring */
 .btn:focus-visible {
   outline: 2px solid var(--brand);
