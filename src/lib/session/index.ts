@@ -31,12 +31,21 @@ function readSession(): Session | null {
 
 /** Defensive JSON write */
 function writeSession(s: Session) {
-  localStorage.setItem(SESSION_KEY, JSON.stringify(s));
+  try {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(s));
+    window.dispatchEvent(new CustomEvent("session:change"));
+  } catch {
+    return;
+  }
 }
 
 function clearSession() {
-  localStorage.removeItem(SESSION_KEY);
-  window.dispatchEvent(new CustomEvent("session:change"));
+  try {
+    localStorage.removeItem(SESSION_KEY);
+    window.dispatchEvent(new CustomEvent("session:change"));
+  } catch {
+    return;
+  }
 }
 
 // Subscribe to session changes from this tab and other tabs
