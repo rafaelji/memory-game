@@ -76,7 +76,7 @@ const Landing = () => {
               aria-describedby={error ? "username-error" : undefined}
               maxLength={20}
               disabled={loading}
-              pattern="[A-Za-z0-9 _-]{1,20}"
+              pattern="[A-Za-z0-9 _\-]{1,20}"
               enterKeyHint="go"
               autoFocus
             />
