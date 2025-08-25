@@ -22,6 +22,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
       login: authService.login,
       logout: authService.logout,
       refresh: authService.refresh,
+      getLastPlayer: authService.getLastPlayer,
     }),
     [session],
   );

@@ -5,6 +5,8 @@ import {
   createSession,
   validateUsername,
   onSessionChange,
+  writeLastPlayer,
+  readLastPlayer,
 } from "@/lib/session";
 import type { AuthService, Listener, LoginResult } from "./types.ts";
 import type { Session } from "@/shared/types/session.ts";
@@ -83,8 +85,13 @@ export function createAuthService(logger: Logger = defaultLogger): AuthService {
     }
     writeSession(createSession(valid)); // fires events
     session = readSession();
+    writeLastPlayer(valid);
     emit();
     return { ok: true };
+  }
+
+  function getLastPlayer(): string | null {
+    return readLastPlayer();
   }
 
   async function logout(): Promise<void> {
@@ -120,6 +127,7 @@ export function createAuthService(logger: Logger = defaultLogger): AuthService {
     getSession,
     isAuthenticated,
     getUsername,
+    getLastPlayer,
     login,
     logout,
     refresh,

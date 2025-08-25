@@ -7,6 +7,7 @@ type AuthContextValue = {
   ) => Promise<{ ok: true } | { ok: false; error: string }>;
   logout: () => Promise<void>;
   refresh: () => Promise<Session | null>;
+  getLastPlayer: () => string | null;
 };
 
 export type { AuthContextValue };

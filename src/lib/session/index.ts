@@ -1,5 +1,5 @@
 import type { Session } from "@/shared/types/session.ts";
-import { SESSION_KEY } from "@/constants/session";
+import { SESSION_KEY, LAST_PLAYER_KEY } from "@/constants/session";
 
 /** Allow-list validation: 1..20 of letters, digits, underscore or hyphen */
 function validateUsername(raw: string): string | null {
@@ -33,6 +33,7 @@ function readSession(): Session | null {
 function writeSession(s: Session) {
   try {
     localStorage.setItem(SESSION_KEY, JSON.stringify(s));
+    localStorage.setItem(LAST_PLAYER_KEY, JSON.stringify(s.username));
     window.dispatchEvent(new CustomEvent("session:change"));
   } catch {
     return;
@@ -62,6 +63,22 @@ function onSessionChange(cb: () => void): () => void {
   };
 }
 
+function writeLastPlayer(username: string): void {
+  try {
+    localStorage.setItem(LAST_PLAYER_KEY, username);
+  } catch {
+    return;
+  }
+}
+
+function readLastPlayer(): string | null {
+  try {
+    return localStorage.getItem(LAST_PLAYER_KEY);
+  } catch {
+    return null;
+  }
+}
+
 export {
   validateUsername,
   createSession,
@@ -69,4 +86,6 @@ export {
   writeSession,
   clearSession,
   onSessionChange,
+  writeLastPlayer,
+  readLastPlayer,
 };

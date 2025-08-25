@@ -1,5 +1,5 @@
 import { type ChangeEvent, type FormEvent, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, Navigate } from "react-router";
 import { ROUTES } from "@/constants/routes";
 import useAuth from "@/hooks/useAuth";
 import logger from "@/services/logger";
@@ -7,7 +7,8 @@ import Button from "@/components/button/Button.tsx";
 import "./Landing.css";
 
 const Landing = () => {
-  const { login, session } = useAuth();
+  const { login, session, getLastPlayer } = useAuth();
+  const lastPlayer = !session ? getLastPlayer() : null;
   const nav = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname ?? ROUTES.GAME;
@@ -41,6 +42,10 @@ const Landing = () => {
     }
   };
 
+  if (session) {
+    return <Navigate to={ROUTES.GAME} replace />;
+  }
+
   return (
     <section className="landing container-sm">
       <div className="panel landing__panel">
@@ -49,9 +54,9 @@ const Landing = () => {
           Enter your name to start the Memory Game.
         </p>
 
-        {session && (
-          <p className="badge" aria-live="polite">
-            Signed in previously as <strong>{session.username}</strong>
+        {!session && lastPlayer && (
+          <p className="badge text-center" aria-live="polite">
+            Signed in previously as <strong>{lastPlayer}</strong>
           </p>
         )}
 

@@ -8,6 +8,7 @@ type AuthService = {
   getSession(): Session | null;
   isAuthenticated(): boolean;
   getUsername(): string | null;
+  getLastPlayer(): string | null;
   login(username: string): Promise<LoginResult>;
   logout(): Promise<void>;
   refresh(): Promise<Session | null>;
