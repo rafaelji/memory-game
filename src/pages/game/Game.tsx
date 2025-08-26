@@ -18,6 +18,7 @@ import { type GameImage } from "@/services/images/types";
 import type { GridSize } from "./types";
 import Skeleton from "@/components/game/skeleton/Skeleton.tsx";
 import VictoryOverlay from "@/components/game/victory-overlay/VictoryOverlay.tsx";
+import Confetti from "@/components/confetti/Confetti.tsx";
 import "./Game.css";
 
 const Game = () => {
@@ -317,6 +318,7 @@ const Game = () => {
           startNew,
         }}
       />
+      {youWon && <Confetti active count={1000} />}
     </section>
   );
 };

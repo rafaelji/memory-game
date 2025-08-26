@@ -1,0 +1,43 @@
+.confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-confetti, 1200); /* above modal */
+  overflow: hidden;
+}
+
+.confetti__piece {
+  position: absolute;
+  top: -10vh; /* start slightly above viewport */
+  border-radius: 2px;
+  background: hsl(var(--h, 200) 80% 60%);
+  opacity: 0;
+  will-change: transform, opacity;
+
+  /* one animation handles fall + spin + sway */
+  animation-name: confetti-fall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards; /* keep hidden at end */
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateX(0) translateY(-10vh) rotate(var(--rot, 0deg));
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateX(var(--sway, 0)) translateY(50vh)
+      rotate(calc(var(--rot, 0deg) + 180deg));
+  }
+
+  100% {
+    transform: translateX(calc(var(--sway, 0px) * 2)) translateY(110vh)
+      rotate(calc(var(--rot, 0deg) + 360deg));
+    opacity: 0;
+  }
+}

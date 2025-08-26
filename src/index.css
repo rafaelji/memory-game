@@ -15,6 +15,7 @@
   --topbar-h: 56px;
   --z-topbar: 1000; /* header sits above content */
   --z-modal: 1100; /* modal sits above header */
+  --z-confetti: 1200; /* confetti sits above everything */
 }
 
 /* ===== Base / light reset ===== */
