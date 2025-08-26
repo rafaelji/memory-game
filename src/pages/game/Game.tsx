@@ -17,6 +17,7 @@ import { fetchGameImages } from "@/services/images";
 import { type GameImage } from "@/services/images/types";
 import type { GridSize } from "./types";
 import "./Game.css";
+import Skeleton from "@/components/game/skeleton/Skeleton.tsx";
 
 const Game = () => {
   const location = useLocation();
@@ -51,6 +52,8 @@ const Game = () => {
   const [images, setImages] = useState<GameImage[] | null | undefined>(
     undefined,
   );
+
+  const isGridLoading = images === undefined || deck.length === 0;
 
   /** Initialize a new shuffled deck */
   const makeDeck = (): CardType[] => {
@@ -267,25 +270,29 @@ const Game = () => {
           : `${pairsCount - foundPairs} pairs remaining.`}
       </p>
 
-      <div
-        className="game__grid"
-        role="grid"
-        aria-label={`${gridSize.rows} by ${gridSize.cols} memory grid`}
-        style={{
-          gridTemplateRows: `repeat(${gridSize.rows}, minmax(0, 1fr))`,
-          gridTemplateColumns: `repeat(${gridSize.cols}, minmax(0, 1fr))`,
-        }}
-      >
-        {deck.map((card, index) => (
-          <Card
-            key={card.id}
-            card={card}
-            lock={lock}
-            index={index}
-            onClick={onCardClick}
-          />
-        ))}
-      </div>
+      {isGridLoading ? (
+        <Skeleton gridSize={gridSize} />
+      ) : (
+        <div
+          className="game__grid"
+          role="grid"
+          aria-label={`${gridSize.rows} by ${gridSize.cols} memory grid`}
+          style={{
+            gridTemplateRows: `repeat(${gridSize.rows}, minmax(0, 1fr))`,
+            gridTemplateColumns: `repeat(${gridSize.cols}, minmax(0, 1fr))`,
+          }}
+        >
+          {deck.map((card, index) => (
+            <Card
+              key={card.id}
+              card={card}
+              lock={lock}
+              index={index}
+              onClick={onCardClick}
+            />
+          ))}
+        </div>
+      )}
       <Outlet
         context={{
           username,
