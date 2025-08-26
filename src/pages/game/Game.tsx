@@ -4,7 +4,14 @@ import Hud from "@/components/game/hud/Hud.tsx";
 import Card from "@/components/game/card/Card.tsx";
 import { type Card as CardType } from "@/components/game/card/types.ts";
 import { DEFAULT_SIZE, SYMBOLS_POOL } from "@/constants/game";
-import { readBest, shuffle, writeBest } from "@/pages/game/Helper.ts";
+import { shuffle } from "@/pages/game/Helper.ts";
+import {
+  writeSnapshot,
+  clearSnapshot,
+  readSnapshot,
+  readBest,
+  maybeWriteBest,
+} from "@/services/game";
 import type { GridSize } from "./types";
 import "./Game.css";
 
@@ -55,6 +62,7 @@ const Game = () => {
     setRunning(false);
     firstPick.current = null;
     lock.current = false;
+    clearSnapshot();
   };
 
   /** Card click handler */
@@ -117,36 +125,66 @@ const Game = () => {
     }, 650);
   };
 
+  /** Tick timer */
   useEffect(() => {
     if (!running) return;
     const id = setInterval(() => setSeconds((s) => s + 1), 1000);
     return () => clearInterval(id);
   }, [running]);
 
-  // Stop timer and store best when finished
+  /** Finish when all pairs are found: stop timer, maybe update best, clear snapshot */
   useEffect(() => {
     if (foundPairs !== pairsCount) return;
     setRunning(false);
-
-    // best score: fewer moves wins; tie-breaker is faster time
-    const best = readBest(username, gridSize);
-    const shouldSave =
-      !best ||
-      moves < best.moves ||
-      (moves === best.moves && seconds < best.seconds);
-
-    if (shouldSave) {
-      writeBest(username, gridSize, moves, seconds);
-    }
-
+    maybeWriteBest(username, gridSize, moves, seconds);
+    clearSnapshot(); // don't resume a finished game
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foundPairs, pairsCount]);
 
-  // Initialize once
+  /** Bootstrap: restore snapshot if present, otherwise start new */
   useEffect(() => {
-    startNew();
+    const saved = readSnapshot(gridSize);
+    if (saved) {
+      setDeck(saved.deck);
+      setMoves(saved.moves);
+      setFoundPairs(saved.foundPairs);
+      setSeconds(saved.seconds);
+      setRunning(saved.running);
+      firstPick.current = null;
+      lock.current = false;
+    } else {
+      startNew();
+    }
+    // Run when domain (user or grid) changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [gridSize.rows, gridSize.cols]);
+
+  /** Persist snapshot whenever structure changes */
+  useEffect(() => {
+    if (deck.length === 0) return;
+    writeSnapshot(gridSize, {
+      deck,
+      moves,
+      foundPairs,
+      running,
+      seconds,
+    });
+  }, [gridSize, deck, moves, foundPairs, running, seconds]);
+
+  /** Save periodically while only the timer ticks (every 5s) to reduce churn */
+  useEffect(() => {
+    if (!running || seconds === 0) return;
+    if (seconds % 5 === 0) {
+      writeSnapshot(gridSize, {
+        deck,
+        moves,
+        foundPairs,
+        running,
+        seconds,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seconds, running]);
 
   return (
     <section className="game">
@@ -169,7 +207,7 @@ const Game = () => {
       <div
         className="game__grid"
         role="grid"
-        aria-label={`${gridSize} by ${gridSize} memory grid`}
+        aria-label={`${gridSize.rows} by ${gridSize.cols} memory grid`}
         style={{
           gridTemplateRows: `repeat(${gridSize.rows}, minmax(0, 1fr))`,
           gridTemplateColumns: `repeat(${gridSize.cols}, minmax(0, 1fr))`,

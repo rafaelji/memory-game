@@ -1,5 +1,6 @@
 import type { Session } from "@/shared/types/session.ts";
 import { SESSION_KEY, LAST_PLAYER_KEY } from "@/constants/session";
+import { clearSnapshot } from "@/services/game";
 
 /** Allow-list validation: 1..20 of letters, digits, underscore or hyphen */
 function validateUsername(raw: string): string | null {
@@ -43,6 +44,7 @@ function writeSession(s: Session) {
 function clearSession() {
   try {
     localStorage.removeItem(SESSION_KEY);
+    clearSnapshot();
     window.dispatchEvent(new CustomEvent("session:change"));
   } catch {
     return;
