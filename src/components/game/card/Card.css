@@ -50,3 +50,17 @@
   background: #0f1a28;
   border-color: #2b3a4f;
 }
+
+.card,
+.card__face {
+  overflow: hidden;
+}
+
+.card__face--front img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: inherit;
+}

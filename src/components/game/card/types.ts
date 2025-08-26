@@ -5,6 +5,8 @@ type Card = {
   symbol: string;
   revealed: boolean;
   matched: boolean;
+  imageUrl?: string;
+  alt?: string;
 };
 
 type CardProps = {

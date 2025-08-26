@@ -24,7 +24,19 @@ const Card = ({ card, lock, index, onClick }: CardProps) => {
       onClick={() => onClick(index)}
       disabled={card.matched || (lock.current && !card.revealed)}
     >
-      <span className="card__face card__face--front">{card.symbol}</span>
+      <span className="card__face card__face--front">
+        {"imageUrl" in card && card.imageUrl ? (
+          <img
+            src={card.imageUrl}
+            alt={card.alt || ""}
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+          />
+        ) : (
+          card.symbol
+        )}
+      </span>
       <span className="card__face card__face--back">?</span>
     </button>
   );

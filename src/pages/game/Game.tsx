@@ -12,6 +12,8 @@ import {
   readBest,
   maybeWriteBest,
 } from "@/services/game";
+import { fetchGameImages } from "@/services/images";
+import { type GameImage } from "@/services/images/types";
 import type { GridSize } from "./types";
 import "./Game.css";
 
@@ -41,8 +43,31 @@ const Game = () => {
   const [moves, setMoves] = useState<number>(0);
   const [foundPairs, setFoundPairs] = useState<number>(0);
 
+  // undefined = deciding; null = emojis; array Pexels loaded
+  const [images, setImages] = useState<GameImage[] | null | undefined>(
+    undefined,
+  );
+
   /** Initialize a new shuffled deck */
   const makeDeck = (): CardType[] => {
+    if (images && images.length >= pairsCount) {
+      let id = 0;
+      const cards: CardType[] = [];
+      for (const img of images.slice(0, pairsCount)) {
+        const base = {
+          imageUrl: img.url,
+          alt: img.alt,
+          revealed: false,
+          matched: false,
+        } as const;
+
+        cards.push({ id: id++, symbol: img.id, ...base });
+        cards.push({ id: id++, symbol: img.id, ...base });
+      }
+      return shuffle(cards);
+    }
+
+    // Fallback: emojis
     const chosenSymbols = SYMBOLS_POOL.slice(0, pairsCount);
     let id = 0;
     const cards: CardType[] = [];
@@ -125,6 +150,21 @@ const Game = () => {
     }, 650);
   };
 
+  // Decide between images and emojis.
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      const imgs = await fetchGameImages({
+        count: pairsCount,
+        query: "animals",
+      });
+      if (alive) setImages(imgs ?? null);
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [pairsCount]);
+
   /** Tick timer */
   useEffect(() => {
     if (!running) return;
@@ -141,8 +181,9 @@ const Game = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foundPairs, pairsCount]);
 
-  /** Bootstrap: restore snapshot if present, otherwise start new */
+  /** Bootstrap: wait for images decision, restore snapshot if present, otherwise start new */
   useEffect(() => {
+    if (images === undefined) return;
     const saved = readSnapshot(gridSize);
     if (saved) {
       setDeck(saved.deck);
@@ -155,9 +196,9 @@ const Game = () => {
     } else {
       startNew();
     }
-    // Run when domain (user or grid) changes
+    // Run when grid changes or images decision changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gridSize.rows, gridSize.cols]);
+  }, [gridSize.rows, gridSize.cols, images]);
 
   /** Persist snapshot whenever structure changes */
   useEffect(() => {
