@@ -1,0 +1,8 @@
+.page-loader {
+  margin-top: 24px;
+}
+
+.page-loader__description {
+  margin-top: 12px;
+  color: var(--muted);
+}

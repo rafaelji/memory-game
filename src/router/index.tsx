@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import {
   Route,
   createBrowserRouter,
@@ -6,11 +7,12 @@ import {
 } from "react-router";
 import { ROUTES } from "@/constants/routes";
 import Layout from "@/layout.tsx";
-import Landing from "@/pages/landing/Landing.tsx";
 import AppRouteError from "@/router/AppRouteError.tsx";
 import RequireAuth from "@/router/RequireAuth.tsx";
-import Game from "@/pages/game/Game.tsx";
-import ScoreModal from "@/pages/score/ScoreModal.tsx";
+
+const Landing = lazy(() => import("@/pages/landing/Landing"));
+const Game = lazy(() => import("@/pages/game/Game"));
+const ScoreModal = lazy(() => import("@/pages/score/ScoreModal"));
 
 const Router = () => {
   const router = createBrowserRouter(
