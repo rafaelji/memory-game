@@ -8,7 +8,7 @@ const BEST_KEY_PREFIX = "snyk-mem:best:v1:";
 
 const SNAP_KEY = "snyk-mem:snapshot";
 
-const DEFAULT_SIZE: GridSize = { rows: 3, cols: 4 };
+const DEFAULT_SIZE: GridSize = { cols: 4, rows: 3 };
 
 const SYMBOLS_POOL = [
   "🍎",
