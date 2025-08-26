@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import Button from "@/components/button/Button.tsx";
 import { ROUTES } from "@/constants/routes";
+import { formatTime } from "@/shared/helpers/time";
 import type { GameHUDProps } from "@/components/game/hud/types.ts";
 import useAuth from "@/hooks/useAuth";
 import logger from "@/services/logger";
@@ -20,12 +21,6 @@ const Hud = ({
   const username = session?.username ?? "guest";
 
   const [loggingOut, setLoggingOut] = useState(false);
-
-  const formatTime = (totalSeconds: number): string => {
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-  };
 
   const handleLogout = async () => {
     if (loggingOut) return; // idempotent guard

@@ -2,7 +2,9 @@ import type { GridSize } from "@/pages/game/types";
 
 /** LocalStorage key for best scores per user + size */
 const BEST_KEY = (user: string, gridSize: GridSize) =>
-  `snyk-mem:best:v1:${user}:${gridSize.rows * gridSize.cols}`;
+  `${BEST_KEY_PREFIX}${user}:${gridSize.rows * gridSize.cols}`;
+
+const BEST_KEY_PREFIX = "snyk-mem:best:v1:";
 
 const SNAP_KEY = "snyk-mem:snapshot";
 
@@ -43,4 +45,4 @@ const SYMBOLS_POOL = [
   "🍤",
 ];
 
-export { BEST_KEY, SYMBOLS_POOL, DEFAULT_SIZE, SNAP_KEY };
+export { BEST_KEY, SYMBOLS_POOL, DEFAULT_SIZE, SNAP_KEY, BEST_KEY_PREFIX };

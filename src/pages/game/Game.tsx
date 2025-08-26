@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Outlet, useLocation } from "react-router";
 import useAuth from "@/hooks/useAuth";
 import Hud from "@/components/game/hud/Hud.tsx";
 import Card from "@/components/game/card/Card.tsx";
@@ -18,8 +19,11 @@ import type { GridSize } from "./types";
 import "./Game.css";
 
 const Game = () => {
+  const location = useLocation();
+  const scoreOpen = location.pathname.startsWith("/game/score");
   const { session } = useAuth();
   const username = session?.username ?? "guest";
+  const wasRunningBeforeModal = useRef(false);
 
   const [gridSize] = useState<GridSize>(DEFAULT_SIZE);
   const currentUserBestScore = readBest(username, gridSize);
@@ -150,6 +154,24 @@ const Game = () => {
     }, 650);
   };
 
+  useEffect(() => {
+    if (scoreOpen) {
+      wasRunningBeforeModal.current = running;
+      if (running) setRunning(false);
+    } else {
+      // Only resume if the game was running before and didn't have finished
+      if (
+        wasRunningBeforeModal.current &&
+        foundPairs < pairsCount &&
+        location.state.isResuming
+      ) {
+        setRunning(true);
+      }
+      wasRunningBeforeModal.current = false;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scoreOpen]);
+
   // Decide between images and emojis.
   useEffect(() => {
     let alive = true;
@@ -264,6 +286,17 @@ const Game = () => {
           />
         ))}
       </div>
+      <Outlet
+        context={{
+          username,
+          gridSize,
+          moves,
+          seconds,
+          foundPairs,
+          pairsCount,
+          startNew,
+        }}
+      />
     </section>
   );
 };

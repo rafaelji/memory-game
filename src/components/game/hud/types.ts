@@ -1,9 +1,11 @@
+import type { BestScore } from "@/services/game/types.ts";
+
 type GameHUDProps = {
   seconds: number;
   moves: number;
   foundPairs: number;
   pairsCount: number;
-  best: { moves: number; seconds: number } | null;
+  best: BestScore | null;
   startNew: () => void;
 };
 

@@ -1,0 +1,85 @@
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgb(4 10 20 / 65%);
+  display: grid;
+  place-items: center;
+  z-index: var(--z-modal, 1100);
+  padding: 16px;
+}
+
+.modal__panel {
+  width: min(560px, 100%);
+}
+
+.modal__actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* simple scores layout */
+.scores {
+  margin-top: 8px;
+}
+
+.scores__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+}
+
+.scores__row:first-child {
+  border-top: 0;
+}
+
+.scores__label {
+  color: var(--muted);
+}
+
+.scores__value {
+  font-weight: 600;
+}
+
+.board {
+  margin-top: 12px;
+  padding-left: 0;
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+
+.board__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.board__rank {
+  color: var(--brand);
+  font-weight: 700;
+  text-align: right;
+}
+
+.board__name {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board__stats {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.board__empty {
+  padding: 12px 0;
+  color: var(--muted);
+  text-align: center;
+}

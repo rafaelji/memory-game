@@ -10,6 +10,7 @@ import Landing from "@/pages/landing/Landing.tsx";
 import AppRouteError from "@/router/AppRouteError.tsx";
 import RequireAuth from "@/router/RequireAuth.tsx";
 import Game from "@/pages/game/Game.tsx";
+import ScoreModal from "@/pages/score/ScoreModal.tsx";
 
 const Router = () => {
   const router = createBrowserRouter(
@@ -17,8 +18,9 @@ const Router = () => {
       <Route element={<Layout />} errorElement={<AppRouteError />}>
         <Route index element={<Landing />} />
         <Route element={<RequireAuth />}>
-          <Route path={ROUTES.GAME} element={<Game />} />
-          <Route path={ROUTES.SCORE} element={<>Game Score</>} />
+          <Route path={ROUTES.GAME} element={<Game />}>
+            <Route path={ROUTES.SCORE} element={<ScoreModal />} />
+          </Route>
         </Route>
         <Route path="*" element={<>404</>} />
       </Route>,

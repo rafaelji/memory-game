@@ -1,6 +1,6 @@
-import type { GameSnapshot } from "./types";
+import type { BestScore, GameSnapshot, LeaderboardRow } from "./types";
 import type { GridSize } from "@/pages/game/types";
-import { BEST_KEY, SNAP_KEY } from "@/constants/game";
+import { BEST_KEY, BEST_KEY_PREFIX, SNAP_KEY } from "@/constants/game";
 import logger from "@/services/logger";
 
 function sizeCells(size: GridSize) {
@@ -56,14 +56,11 @@ function clearSnapshot(): void {
 }
 
 /** Safely read a best score */
-function readBest(
-  user: string,
-  grid: GridSize,
-): { moves: number; seconds: number } | null {
+function readBest(user: string, grid: GridSize): BestScore | null {
   try {
     const raw = localStorage.getItem(BEST_KEY(user, grid));
     if (!raw) return null;
-    const best = JSON.parse(raw) as { moves: number; seconds: number };
+    const best = JSON.parse(raw) as BestScore;
     if (typeof best?.moves !== "number" || typeof best?.seconds !== "number") {
       return null;
     }
@@ -94,6 +91,70 @@ function maybeWriteBest(
   } catch {
     return;
   }
+}
+
+export function readLeaderboardFromBests(
+  grid: GridSize,
+  limit = 100,
+): LeaderboardRow[] {
+  const prefix = BEST_KEY_PREFIX;
+  const cells = grid.rows * grid.cols;
+  const suffix = `:${cells}`;
+
+  const rows: LeaderboardRow[] = [];
+
+  for (let index = 0; index < localStorage.length; index++) {
+    const localStorageKey = localStorage.key(index);
+    if (
+      !localStorageKey ||
+      !localStorageKey.startsWith(prefix) ||
+      !localStorageKey.endsWith(suffix)
+    )
+      continue;
+
+    // Expected key structure: BEST_KEY_PREFIX<user>:<cells>
+    // As username does not accept ":", it is safe to extract via slice:
+    const user = localStorageKey.slice(
+      prefix.length,
+      localStorageKey.length - suffix.length,
+    );
+    if (!user) continue;
+
+    try {
+      const raw = localStorage.getItem(localStorageKey);
+      if (!raw) continue;
+      const val = JSON.parse(raw) as BestScore;
+      if (typeof val?.moves !== "number" || typeof val?.seconds !== "number") {
+        continue;
+      }
+      rows.push({ user, moves: val.moves, seconds: val.seconds });
+    } catch {
+      logger.error("[game/readLeaderboardFromBests]", "failed to parse best");
+    }
+  }
+
+  // Ordering: fewer movements, then less time.
+  rows.sort((a, b) => a.moves - b.moves || a.seconds - b.seconds);
+
+  return rows.slice(0, limit);
+}
+
+export function clearLeaderboardFromBests(grid: GridSize) {
+  const prefix = BEST_KEY_PREFIX;
+  const cells = grid.rows * grid.cols;
+  const suffix = `:${cells}`;
+  const keys: string[] = [];
+  for (let index = 0; index < localStorage.length; index++) {
+    const localStorageKey = localStorage.key(index);
+    if (
+      localStorageKey &&
+      localStorageKey.startsWith(prefix) &&
+      localStorageKey.endsWith(suffix)
+    ) {
+      keys.push(localStorageKey);
+    }
+  }
+  for (const k of keys) localStorage.removeItem(k);
 }
 
 export { maybeWriteBest, readSnapshot, writeSnapshot, clearSnapshot, readBest };

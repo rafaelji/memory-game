@@ -9,4 +9,8 @@ type GameSnapshot = {
   savedAt: number; // ms
 };
 
-export { type GameSnapshot };
+type LeaderboardRow = { user: string; moves: number; seconds: number };
+
+type BestScore = { moves: number; seconds: number };
+
+export type { GameSnapshot, LeaderboardRow, BestScore };
