@@ -16,3 +16,7 @@
     gap: 12px;
   }
 }
+
+.game__stage {
+  position: relative;
+}

@@ -1,0 +1,50 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgb(4 10 20 / 60%);
+  backdrop-filter: blur(10px);
+  display: grid;
+  place-items: center;
+  z-index: var(--z-modal, 1100);
+  padding: 16px;
+}
+
+@media (width <= 425px) {
+  .overlay {
+    padding: 0;
+  }
+}
+
+.overlay__card {
+  width: min(420px, 100%);
+  text-align: center;
+}
+
+.overlay__win-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 12px;
+  font-size: 32px;
+  background: #0e1a2a;
+  border: 1px solid var(--border);
+}
+
+.overlay__win-meta {
+  margin: 8px 0 16px;
+  color: var(--muted);
+}
+
+.overlay__actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+@media (width >= 640px) {
+  .overlay__actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}

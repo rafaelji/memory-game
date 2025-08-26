@@ -16,8 +16,9 @@ import {
 import { fetchGameImages } from "@/services/images";
 import { type GameImage } from "@/services/images/types";
 import type { GridSize } from "./types";
-import "./Game.css";
 import Skeleton from "@/components/game/skeleton/Skeleton.tsx";
+import VictoryOverlay from "@/components/game/victory-overlay/VictoryOverlay.tsx";
+import "./Game.css";
 
 const Game = () => {
   const location = useLocation();
@@ -52,6 +53,8 @@ const Game = () => {
   const [images, setImages] = useState<GameImage[] | null | undefined>(
     undefined,
   );
+
+  const youWon = foundPairs === pairsCount;
 
   const isGridLoading = images === undefined || deck.length === 0;
 
@@ -273,24 +276,34 @@ const Game = () => {
       {isGridLoading ? (
         <Skeleton gridSize={gridSize} />
       ) : (
-        <div
-          className="game__grid"
-          role="grid"
-          aria-label={`${gridSize.rows} by ${gridSize.cols} memory grid`}
-          style={{
-            gridTemplateRows: `repeat(${gridSize.rows}, minmax(0, 1fr))`,
-            gridTemplateColumns: `repeat(${gridSize.cols}, minmax(0, 1fr))`,
-          }}
-        >
-          {deck.map((card, index) => (
-            <Card
-              key={card.id}
-              card={card}
-              lock={lock}
-              index={index}
-              onClick={onCardClick}
+        <div className="game__stage">
+          <div
+            className="game__grid"
+            role="grid"
+            aria-label={`${gridSize.rows} by ${gridSize.cols} memory grid`}
+            style={{
+              gridTemplateRows: `repeat(${gridSize.rows}, minmax(0, 1fr))`,
+              gridTemplateColumns: `repeat(${gridSize.cols}, minmax(0, 1fr))`,
+            }}
+          >
+            {deck.map((card, index) => (
+              <Card
+                key={card.id}
+                card={card}
+                lock={lock}
+                index={index}
+                onClick={onCardClick}
+              />
+            ))}
+          </div>
+
+          {youWon && (
+            <VictoryOverlay
+              totalSeconds={seconds}
+              totalMoves={moves}
+              startNew={startNew}
             />
-          ))}
+          )}
         </div>
       )}
       <Outlet
